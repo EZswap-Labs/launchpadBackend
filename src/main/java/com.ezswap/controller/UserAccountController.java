@@ -1,5 +1,6 @@
 package com.ezswap.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ezswap.common.dto.ResultDto;
 import com.ezswap.common.tool.ResultTool;
 import com.ezswap.entry.UserAccount;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,6 +35,14 @@ public class UserAccountController {
 
     @PostMapping(value = "/register")
     public ResultDto register(@RequestBody UserAccountVo userAccountVo) {
+
+        List<UserAccount> list = userAccountService.lambdaQuery()
+                .eq(UserAccount::getWalletAddress, userAccountVo.getWalletAddress())
+                .or().eq(UserAccount::getEmail, userAccountVo.getEmail())
+                .list();
+        if (null != list && list.size() > 0) {
+            return ResultTool.fail("wallet or email have registered");
+        }
         UserAccount userAccount = new UserAccount();
         userAccount.setEmail(userAccountVo.getEmail());
         userAccount.setPassword(userAccountVo.getPassword());
@@ -42,7 +53,7 @@ public class UserAccountController {
         userAccount.setUserLogo(userAccountVo.getUserLogo());
         userAccount.setIsVerify(userAccountVo.getIsVerify());
         userAccountService.save(userAccount);
-        return ResultTool.success("");
+        return ResultTool.success(userAccount);
     }
 
     @PostMapping(value = "/deleteUserAccount")
