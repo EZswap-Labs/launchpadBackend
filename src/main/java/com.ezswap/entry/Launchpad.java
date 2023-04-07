@@ -1,6 +1,7 @@
 package com.ezswap.entry;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -90,7 +91,8 @@ public class Launchpad implements Serializable {
 
     private Long privatePrice;
     private Long publicPrice;
-
+    private String tokenUrl;
+    @TableField(exist = false)
     private UserAccount userAccount;
 
 }

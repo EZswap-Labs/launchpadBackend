@@ -1,6 +1,9 @@
 package com.ezswap.controller;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.listener.PageReadListener;
+import com.alibaba.fastjson.JSON;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -12,26 +15,28 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.ezswap.common.dto.ResultDto;
 import com.ezswap.common.tool.ResultTool;
 import com.ezswap.entry.Launchpad;
+import com.ezswap.entry.LaunchpadMetadataStandard;
+import com.ezswap.entry.UploadData;
 import com.ezswap.entry.UserAccount;
+import com.ezswap.listener.UploadDataListener;
 import com.ezswap.service.ILaunchpadService;
 import com.ezswap.component.AwsCompnent;
 
 import com.ezswap.service.IUserAccountService;
+import com.ezswap.util.JsonCreateFileUtil;
 import com.ezswap.vo.LaunchpadVo;
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -58,7 +63,19 @@ public class LaunchpadController {
 
     @PostMapping(value = "/addLaunchpad")
     public ResultDto addLaunchpad(@RequestBody LaunchpadVo launchpadVo) {
+        //将metadata上传到s3
+        LaunchpadMetadataStandard launchpadToJson = new LaunchpadMetadataStandard();
+        launchpadToJson.setName(launchpadVo.getCollectionName());
+        launchpadToJson.setDescription(launchpadVo.getDescription());
+        launchpadToJson.setImage_url(launchpadVo.getImgUrl());
+        launchpadToJson.setDecimals(18);
+        InputStream aaa = JsonCreateFileUtil.createJsonFile(new Gson().toJson(launchpadToJson), "/Users/zhangnan/Downloads/" + launchpadVo.getContractAddress() + "/", "aaa");
+        uploadFile(aaa, launchpadVo.getContractAddress()+"/1","application/json");
+
+        String s3Url = "https://ezonline.s3.us-west-2.amazonaws.com/"+launchpadVo.getContractAddress()+"/1";
+
         Launchpad launchpad = new Launchpad();
+        launchpad.setTokenUrl(s3Url);
         launchpad.setCollectionName(launchpadVo.getCollectionName());
         launchpad.setSymbol(launchpadVo.getSymbol());
         launchpad.setDescription(launchpadVo.getDescription());
@@ -92,6 +109,7 @@ public class LaunchpadController {
         launchpad.setPrivatePrice(launchpadVo.getPrivatePrice());
         launchpad.setPublicPrice(launchpadVo.getPublicPrice());
         launchpadService.save(launchpad);
+
         return ResultTool.success("");
     }
 
@@ -139,7 +157,7 @@ public class LaunchpadController {
     @PostMapping(value = "/queryList")
     public ResultDto queryList(@RequestBody LaunchpadVo launchpadVo) {
         LambdaQueryChainWrapper<Launchpad> lambdaQuery = launchpadService.lambdaQuery();
-
+        lambdaQuery.ne(Launchpad::getStatus, 0);
         if (null != launchpadVo.getUserId()) {
             lambdaQuery.eq(Launchpad::getUserId, launchpadVo.getUserId());
         }
@@ -149,6 +167,7 @@ public class LaunchpadController {
         List<Launchpad> list = lambdaQuery.list();
         if (!list.isEmpty() && null != launchpadVo.getId()) {
             UserAccount userAccount = userAccountService.lambdaQuery().eq(UserAccount::getId, list.get(0).getUserId()).one();
+            userAccount.setPassword("");
             list.get(0).setUserAccount(userAccount);
         }
         return ResultTool.success(list);
@@ -157,17 +176,33 @@ public class LaunchpadController {
     @PostMapping(value = "/uploadImg")
     public ResultDto uploadImg(MultipartFile file) throws IOException {
         String s3Url = "https://ezonline.s3.us-west-2.amazonaws.com";
-        String bucket_name = "ezonline";
-        String key_name = System.currentTimeMillis() + "" + +(1 + (int) (Math.random() * 100000000)) + "." + Files.getFileExtension(file.getOriginalFilename());
-        s3Url += "/" + key_name;
+        String fileName = System.currentTimeMillis() + "" + +(1 + (int) (Math.random() * 100000000)) + "." + Files.getFileExtension(file.getOriginalFilename());
+        s3Url += "/" + fileName;
+        uploadFile(file.getInputStream(), fileName,"image/png");
+        return ResultTool.success(s3Url);
+    }
+
+    private void uploadFile(InputStream file, String fileNameAndPath,String fileType) {
         AWSCredentials credentials = new BasicAWSCredentials(awsCompnent.getAccessKey(), awsCompnent.getSecretKey());
         AmazonS3 amazonS3 = AmazonS3Client.builder()
                 .withRegion(Regions.US_WEST_2)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
         ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType("image/png");
-        amazonS3.putObject(bucket_name, key_name, file.getInputStream(), objectMetadata);
-        return ResultTool.success(s3Url);
+        objectMetadata.setContentType(fileType);
+        amazonS3.putObject("ezonline", fileNameAndPath, file, objectMetadata);
     }
+
+//    @PostMapping("uploadWhite")
+//    @ResponseBody
+//    public String uploadWhite(MultipartFile file) {
+////        EasyExcel.read(file.getInputStream(), UploadData.class, null).sheet().doRead();
+//        EasyExcel.read(file, UploadData.class, new PageReadListener<UploadData>(dataList -> {
+//            for (UploadData demoData : dataList) {
+//                System.out.println(JSON.toJSONString(demoData));
+////                log.info("读取到一条数据{}", JSON.toJSONString(demoData));
+//            }
+//        })).sheet().doRead();
+//        return "success";
+//    }
 }
