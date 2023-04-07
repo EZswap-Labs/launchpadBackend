@@ -82,6 +82,8 @@ public class LaunchpadVo {
     private String website;
 
     private Long userId;
+    private Long privatePrice;
+    private Long publicPrice;
 
 
 }

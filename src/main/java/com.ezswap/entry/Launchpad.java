@@ -88,5 +88,9 @@ public class Launchpad implements Serializable {
 
     private String website;
 
+    private Long privatePrice;
+    private Long publicPrice;
+
+    private UserAccount userAccount;
 
 }
