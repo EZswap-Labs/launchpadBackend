@@ -164,6 +164,12 @@ public class LaunchpadController {
         if (null != launchpadVo.getId()) {
             lambdaQuery.eq(Launchpad::getId, launchpadVo.getId());
         }
+        if (null == launchpadVo.getId() && null == launchpadVo.getUserId()){
+            //查 live launchpad
+            lambdaQuery.eq(Launchpad::getStatus, 2)
+                    .gt(Launchpad::getPublicEndTime,System.currentTimeMillis())
+                    .lt(Launchpad::getPublicStartTime,System.currentTimeMillis());
+        }
         List<Launchpad> list = lambdaQuery.list();
         if (!list.isEmpty() && null != launchpadVo.getId()) {
             UserAccount userAccount = userAccountService.lambdaQuery().eq(UserAccount::getId, list.get(0).getUserId()).one();
