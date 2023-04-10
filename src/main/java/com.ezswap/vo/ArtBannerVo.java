@@ -19,27 +19,17 @@ import java.io.Serializable;
  */
 @Data
 @Builder
-public class UserAccountVo {
+public class ArtBannerVo {
 
     private Long id;
 
-    private String email;
-
-    private String password;
-
-    private String walletAddress;
-
-    private Long createTime;
-
-    private Integer isDel;
-
-    private String userName;
-
-    private String userLogo;
-
-    private Integer isVerify;
-
-    private Integer accountRole;
-    private Integer showFirstPage;
+    private Long launchpadId;
     private Integer sortNum;
+    private Integer isDel;
+    private Long createTime;
+    private Long startTime;
+    private Long endTime;
+    private String network;
+
+
 }

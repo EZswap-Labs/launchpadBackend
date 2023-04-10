@@ -42,6 +42,8 @@ public class UserAccount implements Serializable {
     private Integer isVerify;
 
     private Integer accountRole;
+    private Integer showFirstPage;
+    private Integer sortNum;
 
 
 }

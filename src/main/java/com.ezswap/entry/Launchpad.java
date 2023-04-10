@@ -98,6 +98,10 @@ public class Launchpad implements Serializable {
     private String royaltyPayoutAddress;
     private Integer showFirstPage;
     private Integer sortNum;
+    private String network;
+    private String erc;
+    private String userName;
+    private String userLogo;
 
     @TableField(exist = false)
     private UserAccount userAccount;

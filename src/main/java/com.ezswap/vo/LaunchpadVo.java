@@ -90,6 +90,8 @@ public class LaunchpadVo {
     private String royaltyPayoutAddress;
     private Integer showFirstPage;
     private Integer sortNum;
+    private String network;
+    private String erc;
 
 
 }

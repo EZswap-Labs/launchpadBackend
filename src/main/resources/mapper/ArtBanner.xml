@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezswap.mapper.ArtBannerMapper">
+
+    <select id="selfFindList" parameterType="com.ezswap.vo.ArtBannerVo" resultType="com.ezswap.entry.Launchpad">
+        select
+        la.*,
+        ua.user_name,
+        ua.user_logo
+        from art_banner ab
+        left join launchpad la on la.id=ab.launchpad_id
+        left join user_account ua on la.user_id = ua.id
+        where ab.is_del=0
+        <if test="id != null">
+            and ab.id = #{id}
+        </if>
+        <if test="startTime != null">
+            and #{startTime}>ab.create_time
+        </if>
+        <if test="endTime != null">
+            and ab.end_time> #{endTime}
+        </if>
+        <if test="network != null">
+            and ab.network= #{network}
+        </if>
+        order by ab.sort_num desc
+    </select>
+
+</mapper>

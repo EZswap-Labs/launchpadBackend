@@ -153,6 +153,8 @@ public class LaunchpadController {
         launchpad.setRoadmap(launchpadVo.getRoadmap());
         launchpad.setMintSalePayoutAddress(launchpadVo.getMintSalePayoutAddress());
         launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
+        launchpad.setNetwork(launchpadVo.getNetwork());
+        launchpad.setErc(launchpadVo.getErc());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }
