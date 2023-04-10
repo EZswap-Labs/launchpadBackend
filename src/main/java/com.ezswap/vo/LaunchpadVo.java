@@ -84,6 +84,12 @@ public class LaunchpadVo {
     private Long userId;
     private Long privatePrice;
     private Long publicPrice;
+    private String roadmap;
+    private String team;
+    private String mintSalePayoutAddress;
+    private String royaltyPayoutAddress;
+    private Integer showFirstPage;
+    private Integer sortNum;
 
 
 }

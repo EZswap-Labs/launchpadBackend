@@ -92,6 +92,13 @@ public class Launchpad implements Serializable {
     private Long privatePrice;
     private Long publicPrice;
     private String tokenUrl;
+    private String roadmap;
+    private String team;
+    private String mintSalePayoutAddress;
+    private String royaltyPayoutAddress;
+    private Integer showFirstPage;
+    private Integer sortNum;
+
     @TableField(exist = false)
     private UserAccount userAccount;
 

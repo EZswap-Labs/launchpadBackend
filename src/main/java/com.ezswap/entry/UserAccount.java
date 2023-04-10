@@ -41,5 +41,7 @@ public class UserAccount implements Serializable {
 
     private Integer isVerify;
 
+    private Integer accountRole;
+
 
 }

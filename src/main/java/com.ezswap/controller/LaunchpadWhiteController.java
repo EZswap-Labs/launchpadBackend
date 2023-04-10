@@ -31,7 +31,7 @@ public class LaunchpadWhiteController {
         Long userId,
         Long launchpadId,
         Long createTime,
-        Long isDel,
+        Integer isDel,
         String walletAddress,
         Integer launchpadStep,
         Integer mintCount

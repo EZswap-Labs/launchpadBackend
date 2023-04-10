@@ -1,9 +1,7 @@
 package com.ezswap.controller;
 
-import cn.hutool.core.date.DateUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.listener.PageReadListener;
-import com.alibaba.fastjson.JSON;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -14,21 +12,17 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.ezswap.common.dto.ResultDto;
 import com.ezswap.common.tool.ResultTool;
-import com.ezswap.entry.Launchpad;
-import com.ezswap.entry.LaunchpadMetadataStandard;
-import com.ezswap.entry.UploadData;
-import com.ezswap.entry.UserAccount;
-import com.ezswap.listener.UploadDataListener;
+import com.ezswap.entry.*;
+import com.ezswap.mapper.LaunchpadWhiteMapper;
 import com.ezswap.service.ILaunchpadService;
 import com.ezswap.component.AwsCompnent;
 
+import com.ezswap.service.ILaunchpadWhiteService;
 import com.ezswap.service.IUserAccountService;
 import com.ezswap.util.JsonCreateFileUtil;
 import com.ezswap.vo.LaunchpadVo;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
-import io.jsonwebtoken.Claims;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,9 +31,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * <p>
@@ -59,6 +52,8 @@ public class LaunchpadController {
     private IUserAccountService userAccountService;
     @Resource
     private AwsCompnent awsCompnent;
+    @Resource
+    private LaunchpadWhiteMapper launchpadWhiteMapper;
 
 
     @PostMapping(value = "/addLaunchpad")
@@ -70,9 +65,9 @@ public class LaunchpadController {
         launchpadToJson.setImage_url(launchpadVo.getImgUrl());
         launchpadToJson.setDecimals(18);
         InputStream aaa = JsonCreateFileUtil.createJsonFile(new Gson().toJson(launchpadToJson), "/Users/zhangnan/Downloads/" + launchpadVo.getContractAddress() + "/", "aaa");
-        uploadFile(aaa, launchpadVo.getContractAddress()+"/1","application/json");
+        uploadFile(aaa, launchpadVo.getContractAddress() + "/1", "application/json");
 
-        String s3Url = "https://ezonline.s3.us-west-2.amazonaws.com/"+launchpadVo.getContractAddress()+"/1";
+        String s3Url = "https://ezonline.s3.us-west-2.amazonaws.com/" + launchpadVo.getContractAddress() + "/1";
 
         Launchpad launchpad = new Launchpad();
         launchpad.setTokenUrl(s3Url);
@@ -108,6 +103,10 @@ public class LaunchpadController {
         launchpad.setWebsite(launchpadVo.getWebsite());
         launchpad.setPrivatePrice(launchpadVo.getPrivatePrice());
         launchpad.setPublicPrice(launchpadVo.getPublicPrice());
+        launchpad.setTeam(launchpadVo.getTeam());
+        launchpad.setRoadmap(launchpadVo.getRoadmap());
+        launchpad.setMintSalePayoutAddress(launchpadVo.getMintSalePayoutAddress());
+        launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
         launchpadService.save(launchpad);
 
         return ResultTool.success("");
@@ -150,6 +149,10 @@ public class LaunchpadController {
         launchpad.setId(launchpadVo.getId());
         launchpad.setPrivatePrice(launchpadVo.getPrivatePrice());
         launchpad.setPublicPrice(launchpadVo.getPublicPrice());
+        launchpad.setTeam(launchpadVo.getTeam());
+        launchpad.setRoadmap(launchpadVo.getRoadmap());
+        launchpad.setMintSalePayoutAddress(launchpadVo.getMintSalePayoutAddress());
+        launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }
@@ -164,11 +167,11 @@ public class LaunchpadController {
         if (null != launchpadVo.getId()) {
             lambdaQuery.eq(Launchpad::getId, launchpadVo.getId());
         }
-        if (null == launchpadVo.getId() && null == launchpadVo.getUserId()){
+        if (null == launchpadVo.getId() && null == launchpadVo.getUserId()) {
             //查 live launchpad
             lambdaQuery.eq(Launchpad::getStatus, 2)
-                    .gt(Launchpad::getPublicEndTime,System.currentTimeMillis())
-                    .lt(Launchpad::getPublicStartTime,System.currentTimeMillis());
+                    .gt(Launchpad::getPublicEndTime, System.currentTimeMillis())
+                    .lt(Launchpad::getPublicStartTime, System.currentTimeMillis());
         }
         List<Launchpad> list = lambdaQuery.list();
         if (!list.isEmpty() && null != launchpadVo.getId()) {
@@ -184,11 +187,11 @@ public class LaunchpadController {
         String s3Url = "https://ezonline.s3.us-west-2.amazonaws.com";
         String fileName = System.currentTimeMillis() + "" + +(1 + (int) (Math.random() * 100000000)) + "." + Files.getFileExtension(file.getOriginalFilename());
         s3Url += "/" + fileName;
-        uploadFile(file.getInputStream(), fileName,"image/png");
+        uploadFile(file.getInputStream(), fileName, "image/png");
         return ResultTool.success(s3Url);
     }
 
-    private void uploadFile(InputStream file, String fileNameAndPath,String fileType) {
+    private void uploadFile(InputStream file, String fileNameAndPath, String fileType) {
         AWSCredentials credentials = new BasicAWSCredentials(awsCompnent.getAccessKey(), awsCompnent.getSecretKey());
         AmazonS3 amazonS3 = AmazonS3Client.builder()
                 .withRegion(Regions.US_WEST_2)
@@ -199,16 +202,28 @@ public class LaunchpadController {
         amazonS3.putObject("ezonline", fileNameAndPath, file, objectMetadata);
     }
 
-//    @PostMapping("uploadWhite")
-//    @ResponseBody
-//    public String uploadWhite(MultipartFile file) {
-////        EasyExcel.read(file.getInputStream(), UploadData.class, null).sheet().doRead();
-//        EasyExcel.read(file, UploadData.class, new PageReadListener<UploadData>(dataList -> {
-//            for (UploadData demoData : dataList) {
-//                System.out.println(JSON.toJSONString(demoData));
-////                log.info("读取到一条数据{}", JSON.toJSONString(demoData));
-//            }
-//        })).sheet().doRead();
-//        return "success";
-//    }
+    @PostMapping("uploadWhite")
+    @ResponseBody
+    public ResultDto uploadWhite(MultipartFile file, Long launchpadId, Integer launchpadStep, Integer mintCount) {
+//        EasyExcel.read(file.getInputStream(), UploadData.class, null).sheet().doRead();
+        try {
+            List<LaunchpadWhite> launchpadWhiteList = new ArrayList<>();
+            EasyExcel.read(file.getInputStream(), UploadData.class, new PageReadListener<UploadData>(dataList -> {
+                for (UploadData demoData : dataList) {
+                    LaunchpadWhite launchpadWhite = new LaunchpadWhite();
+                    launchpadWhite.setLaunchpadId(launchpadId);
+                    launchpadWhite.setCreateTime(System.currentTimeMillis());
+                    launchpadWhite.setIsDel(0);
+                    launchpadWhite.setWalletAddress(demoData.getAddress());
+                    launchpadWhite.setLaunchpadStep(launchpadStep);
+                    launchpadWhite.setMintCount(mintCount);
+                    launchpadWhiteList.add(launchpadWhite);
+                }
+            })).sheet().doRead();
+            launchpadWhiteMapper.createBATCH(launchpadWhiteList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResultTool.success("");
+    }
 }

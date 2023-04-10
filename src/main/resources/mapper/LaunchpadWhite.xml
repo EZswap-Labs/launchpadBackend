@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezswap.mapper.LaunchpadWhiteMapper">
+
+    <insert id="createBATCH" parameterType="List">
+        INSERT INTO
+        launchpad_white
+        (user_id,launchpad_id,create_time,is_del,wallet_address,launchpad_step,mint_count)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId} ,#{item.launchpadId} ,#{item.createTime} ,#{item.isDel},#{item.walletAddress} ,#{item.launchpadStep},#{item.mintCount})
+        </foreach>
+    </insert>
+
+</mapper>

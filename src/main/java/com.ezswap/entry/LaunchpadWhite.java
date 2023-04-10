@@ -31,7 +31,7 @@ public class LaunchpadWhite implements Serializable {
 
     private Long createTime;
 
-    private Long isDel;
+    private Integer isDel;
 
     private String walletAddress;
 

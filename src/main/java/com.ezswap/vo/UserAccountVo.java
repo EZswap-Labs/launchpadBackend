@@ -39,5 +39,5 @@ public class UserAccountVo {
 
     private Integer isVerify;
 
-
+    private Integer accountRole;
 }
