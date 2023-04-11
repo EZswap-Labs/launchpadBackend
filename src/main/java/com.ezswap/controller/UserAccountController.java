@@ -66,6 +66,19 @@ public class UserAccountController {
     @PostMapping(value = "/login")
     public ResultDto login(@RequestBody UserAccountVo userAccountVo) {
         UserAccount userAccount = userAccountService.lambdaQuery().eq(UserAccount::getWalletAddress, userAccountVo.getWalletAddress()).one();
+        userAccount.setPassword("");
         return ResultTool.success(userAccount);
     }
+
+    @PostMapping(value = "/queryList")
+    public ResultDto queryList(@RequestBody UserAccountVo userAccountVo) {
+        List<UserAccount> userAccountList = userAccountService.lambdaQuery()
+                .eq(UserAccount::getShowFirstPage, 1)
+                .list();
+        for (UserAccount userAccount : userAccountList) {
+            userAccount.setPassword("");
+        }
+        return ResultTool.success(userAccountList);
+    }
+
 }

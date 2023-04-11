@@ -166,23 +166,35 @@ public class LaunchpadController {
         if (null != launchpadVo.getUserId()) {
             lambdaQuery.eq(Launchpad::getUserId, launchpadVo.getUserId());
         }
-        if (null != launchpadVo.getId()) {
-            lambdaQuery.eq(Launchpad::getId, launchpadVo.getId());
-        }
-        if (null == launchpadVo.getId() && null == launchpadVo.getUserId()) {
+        if (null == launchpadVo.getUserId()) {
             //查 live launchpad
             lambdaQuery.eq(Launchpad::getStatus, 2)
                     .gt(Launchpad::getPublicEndTime, System.currentTimeMillis())
                     .lt(Launchpad::getPublicStartTime, System.currentTimeMillis());
         }
         List<Launchpad> list = lambdaQuery.list();
-        if (!list.isEmpty() && null != launchpadVo.getId()) {
-            UserAccount userAccount = userAccountService.lambdaQuery().eq(UserAccount::getId, list.get(0).getUserId()).one();
-            userAccount.setPassword("");
-            list.get(0).setUserAccount(userAccount);
-        }
+//        if (!list.isEmpty() && null != launchpadVo.getId()) {
+//            UserAccount userAccount = userAccountService.lambdaQuery().eq(UserAccount::getId, list.get(0).getUserId()).one();
+//            userAccount.setPassword("");
+//            list.get(0).setUserAccount(userAccount);
+//        }
         return ResultTool.success(list);
     }
+
+    @PostMapping(value = "/queryDetail")
+    public ResultDto queryDetail(@RequestBody LaunchpadVo launchpadVo) {
+        LambdaQueryChainWrapper<Launchpad> lambdaQuery = launchpadService.lambdaQuery();
+        lambdaQuery.ne(Launchpad::getStatus, 0)
+                .eq(Launchpad::getId, launchpadVo.getId());
+        Launchpad launchpad = lambdaQuery.one();
+        if (null != launchpad.getUserId()) {
+            UserAccount userAccount = userAccountService.lambdaQuery().eq(UserAccount::getId, launchpad.getUserId()).one();
+            userAccount.setPassword("");
+            launchpad.setUserAccount(userAccount);
+        }
+        return ResultTool.success(launchpad);
+    }
+
 
     @PostMapping(value = "/uploadImg")
     public ResultDto uploadImg(MultipartFile file) throws IOException {

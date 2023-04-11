@@ -1,10 +1,16 @@
 package com.ezswap.controller;
 
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.ezswap.common.dto.ResultDto;
 import com.ezswap.common.tool.ResultTool;
+import com.ezswap.entry.Launchpad;
 import com.ezswap.entry.LaunchpadWhite;
+import com.ezswap.entry.UserAccount;
 import com.ezswap.service.ILaunchpadWhiteService;
+import com.ezswap.vo.LaunchpadVo;
+import com.ezswap.vo.LaunchpadWhiteVo;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +53,17 @@ public class LaunchpadWhiteController {
         launchpadWhite.setMintCount(mintCount);
         launchpadWhiteService.save(launchpadWhite);
         return ResultTool.success("");
+    }
+
+    @PostMapping(value = "/queryUserInWhite")
+    public ResultDto queryUserInWhite(@RequestBody LaunchpadWhiteVo launchpadWhiteVo) {
+        LambdaQueryChainWrapper<LaunchpadWhite> lambdaQuery = launchpadWhiteService.lambdaQuery();
+        lambdaQuery.eq(LaunchpadWhite::getLaunchpadId, launchpadWhiteVo.getLaunchpadId())
+                .eq(LaunchpadWhite::getWalletAddress, launchpadWhiteVo.getWalletAddress())
+                .eq(LaunchpadWhite::getLaunchpadStep, launchpadWhiteVo.getLaunchpadStep());
+        LaunchpadWhite launchpad = lambdaQuery.one();
+
+        return ResultTool.success(launchpad);
     }
 
 //    @PostMapping(value = "/deleteLaunchpadWhite")
