@@ -2,7 +2,11 @@ package com.ezswap.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ezswap.entry.Launchpad;
 import com.ezswap.entry.UserAccount;
+import com.ezswap.vo.UserAccountVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +18,5 @@ import com.ezswap.entry.UserAccount;
  */
 public interface UserAccountMapper extends BaseMapper<UserAccount> {
 
+    List<Launchpad> selfFindList(UserAccountVo userAccountVo);
 }

@@ -42,4 +42,6 @@ public class UserAccountVo {
     private Integer accountRole;
     private Integer showFirstPage;
     private Integer sortNum;
+    private String collectionName;
+    private String contractAddress;
 }

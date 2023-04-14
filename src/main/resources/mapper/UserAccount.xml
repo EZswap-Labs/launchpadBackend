@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezswap.mapper.UserAccountMapper">
+
+    <select id="selfFindList" parameterType="com.ezswap.vo.UserAccountVo" resultType="com.ezswap.entry.Launchpad">
+        select
+        la.*,
+        ua.user_name,
+        ua.user_logo
+        from user_account ua
+        left join launchpad la on la.user_id=ua.id
+        where ua.is_del=0 and la.is_del=0
+        <if test="id != null">
+            and ua.id = #{id}
+        </if>
+        <if test="userName != null">
+            and #{userName}=ua.user_name
+        </if>
+        <if test="showFirstPage != null">
+            and ua.show_first_page=1
+        </if>
+        <if test="collectionName != null">
+            and la.collection_name=#{collectionName}
+        </if>
+        <if test="contractAddress != null">
+            and la.contract_address=#{contractAddress}
+        </if>
+        order by ua.sort_num desc
+    </select>
+
+</mapper>

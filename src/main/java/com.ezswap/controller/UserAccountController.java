@@ -3,7 +3,9 @@ package com.ezswap.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ezswap.common.dto.ResultDto;
 import com.ezswap.common.tool.ResultTool;
+import com.ezswap.entry.Launchpad;
 import com.ezswap.entry.UserAccount;
+import com.ezswap.mapper.UserAccountMapper;
 import com.ezswap.service.IUserAccountService;
 import com.ezswap.vo.UserAccountVo;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +34,8 @@ import java.util.List;
 public class UserAccountController {
     @Resource
     public IUserAccountService userAccountService;
+    @Resource
+    private UserAccountMapper userAccountMapper;
 
     @PostMapping(value = "/register")
     public ResultDto register(@RequestBody UserAccountVo userAccountVo) {
@@ -72,13 +76,14 @@ public class UserAccountController {
 
     @PostMapping(value = "/queryList")
     public ResultDto queryList(@RequestBody UserAccountVo userAccountVo) {
-        List<UserAccount> userAccountList = userAccountService.lambdaQuery()
-                .eq(UserAccount::getShowFirstPage, 1)
-                .list();
-        for (UserAccount userAccount : userAccountList) {
-            userAccount.setPassword("");
-        }
-        return ResultTool.success(userAccountList);
+        userAccountVo.setShowFirstPage(1);
+        List<Launchpad> resultList=userAccountMapper.selfFindList(userAccountVo);
+//        List<UserAccount> userAccountList = userAccountService.lambdaQuery()
+//                .eq(UserAccount::getShowFirstPage, 1)
+//                .eq(true, UserAccount::getUserName, userAccountVo.getUserName())
+//                .list();
+
+        return ResultTool.success(resultList);
     }
 
 }
