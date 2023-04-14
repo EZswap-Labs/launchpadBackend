@@ -44,4 +44,5 @@ public class UserAccountVo {
     private Integer sortNum;
     private String collectionName;
     private String contractAddress;
+    private String contractAddressOrName;
 }
