@@ -16,3 +16,6 @@ base url: https://launchpadtest.ezswap.io/api/
 
 | 字段名称        | 类型   | 说明                                 |
 | --------------- | ------ | ------------------------------------ |
+|userName | String | 用户名字 |
+|collectionName | String | 合约名字 |
+|contractAddress | String | 合约地址 |
