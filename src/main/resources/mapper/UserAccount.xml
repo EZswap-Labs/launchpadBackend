@@ -14,13 +14,13 @@
             and ua.id = #{id}
         </if>
         <if test="userName != null">
-            and #{userName}=ua.user_name
+            and #{userName} LIKE CONCAT('%',#{userName},'%')
         </if>
         <if test="showFirstPage != null">
             and ua.show_first_page=1
         </if>
         <if test="collectionName != null">
-            and la.collection_name=#{collectionName}
+            and la.collection_name LIKE CONCAT('%',#{collectionName},'%')
         </if>
         <if test="contractAddress != null">
             and la.contract_address=#{contractAddress}
