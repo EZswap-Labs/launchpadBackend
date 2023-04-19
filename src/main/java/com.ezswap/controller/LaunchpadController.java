@@ -63,6 +63,7 @@ public class LaunchpadController {
         launchpadToJson.setName(launchpadVo.getCollectionName());
         launchpadToJson.setDescription(launchpadVo.getDescription());
         launchpadToJson.setImage_url(launchpadVo.getImgUrl());
+        launchpadToJson.setImage(launchpadVo.getImgUrl());
         launchpadToJson.setDecimals(18);
         InputStream aaa = JsonCreateFileUtil.createJsonFile(new Gson().toJson(launchpadToJson), "/Users/zhangnan/Downloads/" + launchpadVo.getContractAddress() + "/", "aaa");
         uploadFile(aaa, launchpadVo.getContractAddress() + "/1", "application/json");

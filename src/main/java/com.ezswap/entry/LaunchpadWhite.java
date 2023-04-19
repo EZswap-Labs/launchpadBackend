@@ -39,5 +39,7 @@ public class LaunchpadWhite implements Serializable {
 
     private Integer mintCount;
 
+    private String signature;
+
 
 }

@@ -14,7 +14,7 @@
             and ua.id = #{id}
         </if>
         <if test="userName != null">
-            and #{userName} LIKE CONCAT('%',#{userName},'%')
+            and #{userName} LIKE CONCAT('%',#{contractAddressOrName},'%')
         </if>
         <if test="showFirstPage != null">
             and ua.show_first_page=1

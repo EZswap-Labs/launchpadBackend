@@ -13,8 +13,10 @@ public class LaunchpadMetadataStandard {
 
     private String name;
     private String description;
+    private String image;
     private Integer decimals;
     private String external_url;
     private String image_url;
+    private String tokenId;
     private List<Object> attributes;
 }
