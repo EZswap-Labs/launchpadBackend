@@ -77,12 +77,14 @@ public class UserAccountController {
     @PostMapping(value = "/queryList")
     public ResultDto queryList(@RequestBody UserAccountVo userAccountVo) {
         userAccountVo.setShowFirstPage(1);
-        if (userAccountVo.getContractAddressOrName().startsWith("0x") && userAccountVo.getContractAddressOrName().length() >= 30) {
-            userAccountVo.setContractAddress(userAccountVo.getContractAddressOrName());
-        } else {
-            userAccountVo.setCollectionName(userAccountVo.getContractAddressOrName());
+        if (null != userAccountVo.getContractAddressOrName()) {
+            if (userAccountVo.getContractAddressOrName().startsWith("0x") && userAccountVo.getContractAddressOrName().length() >= 30) {
+                userAccountVo.setContractAddress(userAccountVo.getContractAddressOrName());
+            } else {
+                userAccountVo.setCollectionName(userAccountVo.getContractAddressOrName());
+            }
         }
-        List<Launchpad> resultList=userAccountMapper.selfFindList(userAccountVo);
+        List<Launchpad> resultList = userAccountMapper.selfFindList(userAccountVo);
 //        List<UserAccount> userAccountList = userAccountService.lambdaQuery()
 //                .eq(UserAccount::getShowFirstPage, 1)
 //                .eq(true, UserAccount::getUserName, userAccountVo.getUserName())

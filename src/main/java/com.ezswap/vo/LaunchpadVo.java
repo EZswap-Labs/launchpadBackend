@@ -92,6 +92,7 @@ public class LaunchpadVo {
     private Integer sortNum;
     private String network;
     private String erc;
+    private String currentTokenId;
 
 
 }

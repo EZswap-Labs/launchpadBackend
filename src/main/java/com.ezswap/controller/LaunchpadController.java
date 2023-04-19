@@ -108,6 +108,7 @@ public class LaunchpadController {
         launchpad.setRoadmap(launchpadVo.getRoadmap());
         launchpad.setMintSalePayoutAddress(launchpadVo.getMintSalePayoutAddress());
         launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
+        launchpad.setCurrentTokenId(launchpadVo.getCurrentTokenId());
         launchpadService.save(launchpad);
 
         return ResultTool.success("");
@@ -156,6 +157,7 @@ public class LaunchpadController {
         launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
         launchpad.setNetwork(launchpadVo.getNetwork());
         launchpad.setErc(launchpadVo.getErc());
+        launchpad.setCurrentTokenId(launchpadVo.getCurrentTokenId());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }

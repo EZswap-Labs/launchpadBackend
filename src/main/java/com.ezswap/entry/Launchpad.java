@@ -102,6 +102,7 @@ public class Launchpad implements Serializable {
     private String erc;
     private String userName;
     private String userLogo;
+    private String currentTokenId;
 
     @TableField(exist = false)
     private UserAccount userAccount;
