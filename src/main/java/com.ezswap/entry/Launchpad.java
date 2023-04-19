@@ -48,7 +48,13 @@ public class Launchpad implements Serializable {
     private Long userId;
 
     private Long createTime;
-
+//    {
+//        0: 'Deleted',
+//            1: 'Draft',
+//            2: 'Deployed',
+//            3: 'Minting',
+//            4: 'Mint Ended',
+//    }
     private Integer status;
 
     private Integer totalSupply;
@@ -100,7 +106,9 @@ public class Launchpad implements Serializable {
     private Integer sortNum;
     private String network;
     private String erc;
+    @TableField(exist = false)
     private String userName;
+    @TableField(exist = false)
     private String userLogo;
     private String currentTokenId;
 

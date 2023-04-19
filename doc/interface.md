@@ -25,3 +25,11 @@ launchpadWhite/queryUserInWhite
 |launchpadId | String | launchpadId |
 |walletAddress | String | 钱包地址 |
 |launchpadStep | int | launchpad阶段.1:空投;2:私募;3:公募 |
+
+#### 3. 查询launchpad详情
+launchpad/queryDetail
+请求参数:
+
+| 字段名称        | 类型   | 说明                                 |
+| --------------- | ------ | ------------------------------------ |
+|id | String | launchpadId |
