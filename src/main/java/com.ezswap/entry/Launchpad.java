@@ -114,5 +114,6 @@ public class Launchpad implements Serializable {
 
     @TableField(exist = false)
     private UserAccount userAccount;
+    private Integer canCreditCard;
 
 }

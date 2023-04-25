@@ -108,7 +108,11 @@ public class LaunchpadController {
         launchpad.setRoadmap(launchpadVo.getRoadmap());
         launchpad.setMintSalePayoutAddress(launchpadVo.getMintSalePayoutAddress());
         launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
-        launchpad.setCurrentTokenId(launchpadVo.getCurrentTokenId());
+        launchpad.setErc(launchpadVo.getErc());
+        launchpad.setCanCreditCard(launchpadVo.getCanCreditCard());
+        if (launchpadVo.getErc().equals("1")) {
+            launchpad.setCurrentTokenId("1");
+        }
         launchpadService.save(launchpad);
 
         return ResultTool.success("");
@@ -158,6 +162,7 @@ public class LaunchpadController {
         launchpad.setNetwork(launchpadVo.getNetwork());
         launchpad.setErc(launchpadVo.getErc());
         launchpad.setCurrentTokenId(launchpadVo.getCurrentTokenId());
+        launchpad.setCanCreditCard(launchpadVo.getCanCreditCard());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }
@@ -244,3 +249,5 @@ public class LaunchpadController {
         return ResultTool.success("");
     }
 }
+
+
