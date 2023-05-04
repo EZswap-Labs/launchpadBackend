@@ -45,7 +45,9 @@ public class LaunchpadVo {
 
     private Integer totalSupply;
 
-    private Integer mintCount;
+    private Integer publicMintCount;
+    private Integer privateMintCount;
+    private Integer airdropMintCount;
 
     private String contractAddress;
 
@@ -82,8 +84,8 @@ public class LaunchpadVo {
     private String website;
 
     private Long userId;
-    private Long privatePrice;
-    private Long publicPrice;
+    private String privatePrice;
+    private String publicPrice;
     private String roadmap;
     private String team;
     private String mintSalePayoutAddress;

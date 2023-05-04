@@ -84,7 +84,9 @@ public class LaunchpadController {
         launchpad.setUserId(launchpadVo.getUserId());
         launchpad.setStatus(launchpadVo.getStatus());
         launchpad.setTotalSupply(launchpadVo.getTotalSupply());
-        launchpad.setMintCount(launchpadVo.getMintCount());
+        launchpad.setPublicMintCount(launchpadVo.getPublicMintCount());
+        launchpad.setPrivateMintCount(launchpadVo.getPrivateMintCount());
+        launchpad.setAirdropMintCount(launchpadVo.getAirdropMintCount());
         launchpad.setContractAddress(launchpadVo.getContractAddress());
         launchpad.setPublicEveryUserMintLimit(launchpadVo.getPublicEveryUserMintLimit());
         launchpad.setAirdropStartTime(launchpadVo.getAirdropStartTime());
@@ -110,7 +112,7 @@ public class LaunchpadController {
         launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
         launchpad.setErc(launchpadVo.getErc());
         launchpad.setCanCreditCard(launchpadVo.getCanCreditCard());
-        if (launchpadVo.getErc().equals("1")) {
+        if (launchpadVo.getErc().equals("1155")) {
             launchpad.setCurrentTokenId("1");
         }
         launchpadService.save(launchpad);
@@ -134,7 +136,9 @@ public class LaunchpadController {
         launchpad.setCreateTime(System.currentTimeMillis());
         launchpad.setStatus(launchpadVo.getStatus());
         launchpad.setTotalSupply(launchpadVo.getTotalSupply());
-        launchpad.setMintCount(launchpadVo.getMintCount());
+        launchpad.setPublicMintCount(launchpadVo.getPublicMintCount());
+        launchpad.setPrivateMintCount(launchpadVo.getPrivateMintCount());
+        launchpad.setAirdropMintCount(launchpadVo.getAirdropMintCount());
         launchpad.setContractAddress(launchpadVo.getContractAddress());
         launchpad.setPublicEveryUserMintLimit(launchpadVo.getPublicEveryUserMintLimit());
         launchpad.setAirdropStartTime(launchpadVo.getAirdropStartTime());

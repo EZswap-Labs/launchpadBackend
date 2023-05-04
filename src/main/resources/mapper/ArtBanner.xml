@@ -15,7 +15,7 @@
             and ab.id = #{id}
         </if>
         <if test="startTime != null">
-            and #{startTime}>ab.create_time
+            and #{startTime}>ab.start_time
         </if>
         <if test="endTime != null">
             and ab.end_time> #{endTime}

@@ -59,7 +59,9 @@ public class Launchpad implements Serializable {
 
     private Integer totalSupply;
 
-    private Integer mintCount;
+    private Integer publicMintCount;
+    private Integer privateMintCount;
+    private Integer airdropMintCount;
 
     private String contractAddress;
 
@@ -95,8 +97,8 @@ public class Launchpad implements Serializable {
 
     private String website;
 
-    private Long privatePrice;
-    private Long publicPrice;
+    private String privatePrice;
+    private String publicPrice;
     private String tokenUrl;
     private String roadmap;
     private String team;
