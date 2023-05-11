@@ -111,6 +111,7 @@ public class LaunchpadController {
         launchpad.setMintSalePayoutAddress(launchpadVo.getMintSalePayoutAddress());
         launchpad.setRoyaltyPayoutAddress(launchpadVo.getRoyaltyPayoutAddress());
         launchpad.setErc(launchpadVo.getErc());
+        launchpad.setNetwork(launchpadVo.getNetwork());
         launchpad.setCanCreditCard(launchpadVo.getCanCreditCard());
         if (launchpadVo.getErc().equals("1155")) {
             launchpad.setCurrentTokenId("1");
