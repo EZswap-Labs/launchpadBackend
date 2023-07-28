@@ -48,18 +48,23 @@ public class LaunchpadVo {
     private Integer publicMintCount;
     private Integer privateMintCount;
     private Integer airdropMintCount;
+    private Integer whiteMintMintCount;
 
     private String contractAddress;
 
     private Integer publicEveryUserMintLimit;
 
     private Long airdropStartTime;
+    private Long whiteMintStartTime;
 
     private Long airdropEndTime;
+    private Long whiteMintEndTime;
 
     private Integer airdropSupply;
+    private Integer whiteMintSupply;
 
     private Integer airdropEveryUserMintLimit;
+    private Integer whiteMintEveryUserMintLimit;
 
     private String discord;
 
@@ -96,6 +101,18 @@ public class LaunchpadVo {
     private String erc;
     private String currentTokenId;
     private Integer canCreditCard;
+    private Integer startMode;
+    private String whiteFee;
+    private String privateFee;
+    private String publicFee;
+    private String baseUri;
+    private String signer;
+
+    private Integer publicEveryUserMinMintLimit;
+    private Integer privateEveryUserMinMintLimit;
+    private Integer whiteMintEveryUserMinMintLimit;
+    private Integer airdropEveryUserMinMintLimit;
+    private String payType;
 
 
 }

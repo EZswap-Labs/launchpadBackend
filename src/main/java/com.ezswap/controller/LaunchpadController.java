@@ -113,6 +113,22 @@ public class LaunchpadController {
         launchpad.setErc(launchpadVo.getErc());
         launchpad.setNetwork(launchpadVo.getNetwork());
         launchpad.setCanCreditCard(launchpadVo.getCanCreditCard());
+        launchpad.setStartMode(launchpadVo.getStartMode());
+        launchpad.setPrivateFee(launchpadVo.getPrivateFee());
+        launchpad.setWhiteFee(launchpadVo.getWhiteFee());
+        launchpad.setPublicFee(launchpadVo.getPublicFee());
+        launchpad.setWhiteMintSupply(launchpadVo.getAirdropSupply());
+        launchpad.setWhiteMintEndTime(launchpadVo.getAirdropEndTime());
+        launchpad.setWhiteMintStartTime(launchpadVo.getAirdropStartTime());
+        launchpad.setWhiteMintEveryUserMintLimit(launchpadVo.getAirdropEveryUserMintLimit());
+        launchpad.setWhiteMintMintCount(launchpadVo.getAirdropMintCount());
+        launchpad.setSigner(launchpadVo.getSigner());
+        launchpad.setBaseUri(launchpadVo.getBaseUri());
+        launchpad.setAirdropEveryUserMinMintLimit(launchpadVo.getAirdropEveryUserMinMintLimit());
+        launchpad.setPublicEveryUserMinMintLimit(launchpadVo.getPublicEveryUserMinMintLimit());
+        launchpad.setWhiteMintEveryUserMinMintLimit(launchpadVo.getWhiteMintEveryUserMinMintLimit());
+        launchpad.setPrivateEveryUserMinMintLimit(launchpadVo.getPrivateEveryUserMinMintLimit());
+        launchpad.setPayType(launchpadVo.getPayType());
         if (launchpadVo.getErc().equals("1155")) {
             launchpad.setCurrentTokenId("1");
         }
@@ -168,6 +184,22 @@ public class LaunchpadController {
         launchpad.setErc(launchpadVo.getErc());
         launchpad.setCurrentTokenId(launchpadVo.getCurrentTokenId());
         launchpad.setCanCreditCard(launchpadVo.getCanCreditCard());
+        launchpad.setStartMode(launchpadVo.getStartMode());
+        launchpad.setPrivateFee(launchpadVo.getPrivateFee());
+        launchpad.setWhiteFee(launchpadVo.getWhiteFee());
+        launchpad.setPublicFee(launchpadVo.getPublicFee());
+        launchpad.setWhiteMintSupply(launchpadVo.getAirdropSupply());
+        launchpad.setWhiteMintEndTime(launchpadVo.getAirdropEndTime());
+        launchpad.setWhiteMintStartTime(launchpadVo.getAirdropStartTime());
+        launchpad.setWhiteMintEveryUserMintLimit(launchpadVo.getAirdropEveryUserMintLimit());
+        launchpad.setWhiteMintMintCount(launchpadVo.getAirdropMintCount());
+        launchpad.setSigner(launchpadVo.getSigner());
+        launchpad.setBaseUri(launchpadVo.getBaseUri());
+        launchpad.setAirdropEveryUserMinMintLimit(launchpadVo.getAirdropEveryUserMinMintLimit());
+        launchpad.setPublicEveryUserMinMintLimit(launchpadVo.getPublicEveryUserMinMintLimit());
+        launchpad.setWhiteMintEveryUserMinMintLimit(launchpadVo.getWhiteMintEveryUserMinMintLimit());
+        launchpad.setPrivateEveryUserMinMintLimit(launchpadVo.getPrivateEveryUserMinMintLimit());
+        launchpad.setPayType(launchpadVo.getPayType());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }
