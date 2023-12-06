@@ -133,4 +133,9 @@ public class Launchpad implements Serializable {
     private Integer whiteMintEveryUserMinMintLimit;
     private Integer airdropEveryUserMinMintLimit;
     private String payType;
+    private Integer jumpType;
+    private String jumpUrl;
+    private Integer haveWhiteMint;
+    private Integer havePrivateMint;
+    private Integer havePublicMint;
 }

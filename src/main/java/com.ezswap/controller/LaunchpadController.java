@@ -129,6 +129,9 @@ public class LaunchpadController {
         launchpad.setWhiteMintEveryUserMinMintLimit(launchpadVo.getWhiteMintEveryUserMinMintLimit());
         launchpad.setPrivateEveryUserMinMintLimit(launchpadVo.getPrivateEveryUserMinMintLimit());
         launchpad.setPayType(launchpadVo.getPayType());
+        launchpad.setHaveWhiteMint(launchpadVo.getHaveWhiteMint());
+        launchpad.setHavePrivateMint(launchpadVo.getHavePrivateMint());
+        launchpad.setHavePublicMint(launchpadVo.getHavePublicMint());
         if (launchpadVo.getErc().equals("1155")) {
             launchpad.setCurrentTokenId("1");
         }
@@ -200,6 +203,9 @@ public class LaunchpadController {
         launchpad.setWhiteMintEveryUserMinMintLimit(launchpadVo.getWhiteMintEveryUserMinMintLimit());
         launchpad.setPrivateEveryUserMinMintLimit(launchpadVo.getPrivateEveryUserMinMintLimit());
         launchpad.setPayType(launchpadVo.getPayType());
+        launchpad.setHaveWhiteMint(launchpadVo.getHaveWhiteMint());
+        launchpad.setHavePrivateMint(launchpadVo.getHavePrivateMint());
+        launchpad.setHavePublicMint(launchpadVo.getHavePublicMint());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }

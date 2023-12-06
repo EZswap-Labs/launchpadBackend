@@ -113,6 +113,8 @@ public class LaunchpadVo {
     private Integer whiteMintEveryUserMinMintLimit;
     private Integer airdropEveryUserMinMintLimit;
     private String payType;
-
+    private Integer haveWhiteMint;
+    private Integer havePrivateMint;
+    private Integer havePublicMint;
 
 }
