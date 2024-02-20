@@ -132,6 +132,7 @@ public class LaunchpadController {
         launchpad.setHaveWhiteMint(launchpadVo.getHaveWhiteMint());
         launchpad.setHavePrivateMint(launchpadVo.getHavePrivateMint());
         launchpad.setHavePublicMint(launchpadVo.getHavePublicMint());
+        launchpad.setLaunchpadType(launchpadVo.getLaunchpadType());
         if (launchpadVo.getErc().equals("1155")) {
             launchpad.setCurrentTokenId("1");
         }
@@ -206,6 +207,7 @@ public class LaunchpadController {
         launchpad.setHaveWhiteMint(launchpadVo.getHaveWhiteMint());
         launchpad.setHavePrivateMint(launchpadVo.getHavePrivateMint());
         launchpad.setHavePublicMint(launchpadVo.getHavePublicMint());
+        launchpad.setLaunchpadType(launchpadVo.getLaunchpadType());
         launchpadService.updateById(launchpad);
         return ResultTool.success("");
     }
@@ -217,6 +219,7 @@ public class LaunchpadController {
         if (null != launchpadVo.getUserId()) {
             lambdaQuery.eq(Launchpad::getUserId, launchpadVo.getUserId());
         }
+        lambdaQuery.eq(launchpadVo.getLaunchpadType() != null, Launchpad::getLaunchpadType, launchpadVo.getLaunchpadType());
         if (null == launchpadVo.getUserId()) {
             //查 live launchpad
             lambdaQuery.eq(Launchpad::getStatus, 2)

@@ -26,7 +26,6 @@ public class WebhooksController {
     @PostMapping(value = "/wert")
     public ResultDto register(@RequestBody WertWebhook wertWebhook) {
 
-        System.out.println(new Gson().toJson(wertWebhook));
         return ResultTool.success("");
     }
 

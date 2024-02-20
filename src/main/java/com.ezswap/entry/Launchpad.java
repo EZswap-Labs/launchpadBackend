@@ -138,4 +138,5 @@ public class Launchpad implements Serializable {
     private Integer haveWhiteMint;
     private Integer havePrivateMint;
     private Integer havePublicMint;
+    private Integer launchpadType;
 }

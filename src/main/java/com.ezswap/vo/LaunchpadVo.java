@@ -116,5 +116,6 @@ public class LaunchpadVo {
     private Integer haveWhiteMint;
     private Integer havePrivateMint;
     private Integer havePublicMint;
+    private Integer launchpadType;
 
 }

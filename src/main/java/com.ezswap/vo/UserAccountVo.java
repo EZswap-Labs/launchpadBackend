@@ -45,4 +45,5 @@ public class UserAccountVo {
     private String collectionName;
     private String contractAddress;
     private String contractAddressOrName;
+    private Integer launchpadType;
 }

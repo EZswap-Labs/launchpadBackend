@@ -25,7 +25,10 @@
         <if test="contractAddress != null">
             and la.contract_address=#{contractAddress}
         </if>
-        order by ua.sort_num desc
+        <if test="launchpadType != null">
+            and la.launchpad_type= #{launchpadType}
+        </if>
+        order by ua.sort_num desc, la.sort_num desc
     </select>
 
 </mapper>
